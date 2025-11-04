@@ -2,10 +2,12 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { user, isAdmin, signOut } = useAuth();
 
   const navItems = [
     { name: "Home", path: "/" },
@@ -36,6 +38,27 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            {user ? (
+              <>
+                {isAdmin && (
+                  <Link
+                    to="/admin-secret-dashboard"
+                    className="text-lg font-medium transition-colors hover:text-primary text-foreground"
+                  >
+                    Admin
+                  </Link>
+                )}
+                <Button onClick={signOut} variant="outline" size="sm">
+                  Esci
+                </Button>
+              </>
+            ) : (
+              <Link to="/auth">
+                <Button variant="outline" size="sm">
+                  Accedi
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -64,6 +87,28 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            {user ? (
+              <>
+                {isAdmin && (
+                  <Link
+                    to="/admin-secret-dashboard"
+                    className="block py-3 text-lg font-medium transition-colors hover:text-primary text-foreground"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Admin
+                  </Link>
+                )}
+                <Button onClick={signOut} variant="outline" size="sm" className="mt-2 w-full">
+                  Esci
+                </Button>
+              </>
+            ) : (
+              <Link to="/auth" onClick={() => setIsOpen(false)}>
+                <Button variant="outline" size="sm" className="mt-2 w-full">
+                  Accedi
+                </Button>
+              </Link>
+            )}
           </div>
         )}
       </div>

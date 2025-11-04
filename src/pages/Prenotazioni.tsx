@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Prenotazioni = () => {
   const [formData, setFormData] = useState({
@@ -20,20 +21,41 @@ const Prenotazioni = () => {
     date: "",
     notes: "",
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Richiesta inviata con successo! Ti contatteremo presto.");
-    setFormData({
-      restaurantName: "",
-      contactName: "",
-      email: "",
-      phone: "",
-      product: "",
-      quantity: "",
-      date: "",
-      notes: "",
+    setLoading(true);
+
+    const { error } = await supabase.from('bookings').insert({
+      restaurant_name: formData.restaurantName,
+      contact_name: formData.contactName,
+      email: formData.email,
+      phone: formData.phone,
+      product: formData.product,
+      quantity: parseInt(formData.quantity),
+      desired_date: formData.date,
+      notes: formData.notes || null,
     });
+
+    setLoading(false);
+
+    if (error) {
+      toast.error("Errore nell'invio della richiesta. Riprova più tardi.");
+      console.error(error);
+    } else {
+      toast.success("Richiesta inviata con successo! Ti contatteremo presto.");
+      setFormData({
+        restaurantName: "",
+        contactName: "",
+        email: "",
+        phone: "",
+        product: "",
+        quantity: "",
+        date: "",
+        notes: "",
+      });
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -162,8 +184,8 @@ const Prenotazioni = () => {
                   </div>
                 </div>
 
-                <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-primary to-accent">
-                  Invia Richiesta
+                <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-primary to-accent" disabled={loading}>
+                  {loading ? "Invio in corso..." : "Invia Richiesta"}
                 </Button>
               </form>
             </CardContent>
