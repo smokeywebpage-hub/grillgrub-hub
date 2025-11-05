@@ -12,7 +12,7 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Menu", path: "/menu" },
-    { name: "Prenotazioni B2B", path: "/prenotazioni" },
+    { name: "B2B", path: "/b2b" },
   ];
 
   const isActive = (path: string) => location.pathname === path;

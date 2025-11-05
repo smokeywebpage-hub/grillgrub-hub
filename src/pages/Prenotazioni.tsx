@@ -7,10 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useSearchParams } from "react-router-dom";
 
 const Prenotazioni = () => {
+  const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     restaurantName: "",
     contactName: "",
@@ -22,6 +24,13 @@ const Prenotazioni = () => {
     notes: "",
   });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const productParam = searchParams.get('product');
+    if (productParam) {
+      setFormData(prev => ({ ...prev, product: productParam }));
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
