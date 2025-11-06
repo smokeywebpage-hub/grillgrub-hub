@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
-              Grill House
+              Smokey
             </h3>
             <p className="text-muted-foreground">
               Il miglior ristorante di hamburger e carne della città. Qualità premium, sapori autentici.
@@ -43,7 +43,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-8 border-t border-border text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Grill House. Tutti i diritti riservati.</p>
+          <p>&copy; {new Date().getFullYear()} Smokey. Tutti i diritti riservati.</p>
         </div>
       </div>
     </footer>

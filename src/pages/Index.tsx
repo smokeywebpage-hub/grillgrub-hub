@@ -25,7 +25,7 @@ const Index = () => {
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 animate-fade-in">
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Grill House
+              Smokey
             </span>
           </h1>
           <p className="text-2xl md:text-3xl text-foreground mb-8 animate-fade-in">
