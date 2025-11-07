@@ -189,13 +189,6 @@ export const AdminMenu = () => {
     setImageFile(null);
   };
 
-  const addNewCategory = () => {
-    if (newCategory.trim() && !categories.includes(newCategory.trim())) {
-      setFormData({ ...formData, category: newCategory.trim() });
-      setNewCategory('');
-      setShowNewCategory(false);
-    }
-  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -231,40 +224,18 @@ export const AdminMenu = () => {
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Categoria</label>
-            <div className="flex gap-2">
-              <select
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                required
-              >
-                <option value="">Seleziona categoria</option>
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setShowNewCategory(!showNewCategory)}
-              >
-                <Plus className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            {showNewCategory && (
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Nuova categoria"
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                />
-                <Button type="button" onClick={addNewCategory}>Aggiungi</Button>
-                <Button type="button" variant="outline" onClick={() => setShowNewCategory(false)}>
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-            )}
+            <Input
+              list="categories-list"
+              placeholder="Seleziona o digita una nuova categoria"
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              required
+            />
+            <datalist id="categories-list">
+              {categories.map((cat) => (
+                <option key={cat} value={cat} />
+              ))}
+            </datalist>
           </div>
 
           <Textarea
