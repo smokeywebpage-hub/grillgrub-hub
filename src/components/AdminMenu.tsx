@@ -235,19 +235,26 @@ export const AdminMenu = () => {
             <label className="text-sm font-medium mb-2 block">Categoria *</label>
             <Input
               list="categories-list"
-              placeholder="Seleziona o digita nuova categoria (Es: Hamburger, Carni, Contorni)"
+              placeholder="Digita nome categoria (Es: Hamburger, Carni, Contorni, Bibite)"
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
               required
+              className="mb-2"
             />
             <datalist id="categories-list">
               {categories.map((cat) => (
                 <option key={cat} value={cat} />
               ))}
             </datalist>
-            <p className="text-xs text-muted-foreground mt-1">
-              Seleziona una categoria esistente o digita una nuova
-            </p>
+            <div className="bg-primary/10 border border-primary/20 rounded-md p-3">
+              <p className="text-sm font-medium text-primary mb-1">
+                💡 Come funziona:
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Puoi selezionare una categoria esistente dall'elenco oppure digitare un nuovo nome. 
+                La nuova categoria verrà creata automaticamente quando salvi l'elemento.
+              </p>
+            </div>
           </div>
 
           <div>
