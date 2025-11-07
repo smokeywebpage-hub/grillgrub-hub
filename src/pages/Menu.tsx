@@ -107,38 +107,39 @@ const Menu = () => {
                     <h2 className="text-4xl font-bold mb-8 text-primary">
                       {category}
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                       {items.map((item) => (
                         <Card 
                           key={item.id} 
                           className="overflow-hidden bg-card border-border hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
                         >
                           <CardContent className="p-0">
-                            <div className="flex flex-col sm:flex-row">
-                              {item.image_url && (
-                                <div className="w-full sm:w-32 h-32 flex-shrink-0">
+                            <div className="flex flex-col">
+                              <div className="aspect-square w-full overflow-hidden bg-muted">
+                                {item.image_url ? (
                                   <img 
                                     src={item.image_url} 
                                     alt={item.name}
                                     className="w-full h-full object-cover"
                                     onError={(e) => {
-                                      // Hide image if it fails to load
                                       e.currentTarget.style.display = 'none';
                                     }}
                                   />
-                                </div>
-                              )}
-                              <div className="p-6 flex-1">
-                                <div className="flex justify-between items-start mb-2">
-                                  <h3 className="text-xl font-semibold">
-                                    {item.name}
-                                  </h3>
-                                  <span className="text-lg font-bold text-primary ml-4">
-                                    €{item.price.toFixed(2)}
-                                  </span>
-                                </div>
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                                    Nessuna immagine
+                                  </div>
+                                )}
+                              </div>
+                              <div className="p-4">
+                                <h3 className="text-xl font-semibold mb-2">
+                                  {item.name}
+                                </h3>
+                                <span className="text-lg font-bold text-primary block mb-2">
+                                  €{item.price.toFixed(2)}
+                                </span>
                                 {item.description && (
-                                  <p className="text-muted-foreground">
+                                  <p className="text-sm text-muted-foreground line-clamp-3">
                                     {item.description}
                                   </p>
                                 )}

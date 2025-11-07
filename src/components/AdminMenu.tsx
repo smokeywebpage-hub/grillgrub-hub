@@ -351,21 +351,26 @@ export const AdminMenu = () => {
                   </Button>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {categoryItems.map((item) => (
                     <Card key={item.id} className="overflow-hidden border-border">
-                      {item.image_url && (
-                        <div className="w-full h-40 overflow-hidden">
+                      <div className="aspect-square w-full overflow-hidden bg-muted">
+                        {item.image_url ? (
                           <img
                             src={item.image_url}
                             alt={item.name}
                             className="w-full h-full object-cover"
                           />
-                        </div>
-                      )}
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                            Nessuna immagine
+                          </div>
+                        )}
+                      </div>
                       <div className="p-4 space-y-3">
                         <div>
                           <h4 className="font-semibold text-lg mb-1">{item.name}</h4>
+                          <p className="text-lg font-bold text-primary mb-2">€{item.price.toFixed(2)}</p>
                           {item.description && (
                             <p className="text-sm text-muted-foreground line-clamp-2">
                               {item.description}
@@ -373,8 +378,7 @@ export const AdminMenu = () => {
                           )}
                         </div>
                         
-                        <div className="flex justify-between items-center">
-                          <p className="text-lg font-bold text-primary">€{item.price.toFixed(2)}</p>
+                        <div className="flex items-center justify-between">
                           <p className={`text-sm ${item.available ? 'text-green-600' : 'text-red-600'}`}>
                             {item.available ? '✓ Disponibile' : '✗ Non disponibile'}
                           </p>
