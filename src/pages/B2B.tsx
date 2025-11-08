@@ -4,9 +4,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useNavigate } from "react-router-dom";
 import pulledPorkImg from "@/assets/pulled-pork.jpg";
 import steakImg from "@/assets/steak.jpg";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const B2B = () => {
   const navigate = useNavigate();
+  const [content, setContent] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const { data } = await supabase
+        .from('site_content')
+        .select('key, value')
+        .eq('section', 'b2b');
+      
+      if (data) {
+        const contentMap: Record<string, string> = {};
+        data.forEach(item => contentMap[item.key] = item.value);
+        setContent(contentMap);
+      }
+    };
+
+    fetchContent();
+  }, []);
 
   const products = [
     {
@@ -52,10 +72,9 @@ const B2B = () => {
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">Fornitura B2B</h1>
+            <h1 className="text-5xl md:text-6xl font-bold mb-4">{content.b2b_page_title || 'Fornitura B2B'}</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Carni premium selezionate per ristoranti e attività commerciali.
-              Scegli il prodotto e richiedi una fornitura personalizzata.
+              {content.b2b_page_subtitle || 'Carni premium selezionate per ristoranti e attività commerciali. Scegli il prodotto e richiedi una fornitura personalizzata.'}
             </p>
           </div>
 
@@ -81,7 +100,7 @@ const B2B = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-primary font-semibold">
-                    Clicca per richiedere una fornitura →
+                    {content.b2b_product_cta || 'Clicca per richiedere una fornitura →'}
                   </p>
                 </CardContent>
               </Card>
@@ -91,27 +110,27 @@ const B2B = () => {
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <Card className="bg-card border-border text-center">
               <CardHeader>
-                <CardTitle>Qualità Premium</CardTitle>
+                <CardTitle>{content.b2b_benefit_1_title || 'Qualità Premium'}</CardTitle>
                 <CardDescription>
-                  Solo le migliori carni selezionate per il tuo business
+                  {content.b2b_benefit_1_description || 'Solo le migliori carni selezionate per il tuo business'}
                 </CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="bg-card border-border text-center">
               <CardHeader>
-                <CardTitle>Consegna Rapida</CardTitle>
+                <CardTitle>{content.b2b_benefit_2_title || 'Consegna Rapida'}</CardTitle>
                 <CardDescription>
-                  Consegne puntuali e affidabili in tutta la regione
+                  {content.b2b_benefit_2_description || 'Consegne puntuali e affidabili in tutta la regione'}
                 </CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="bg-card border-border text-center">
               <CardHeader>
-                <CardTitle>Prezzi Competitivi</CardTitle>
+                <CardTitle>{content.b2b_benefit_3_title || 'Prezzi Competitivi'}</CardTitle>
                 <CardDescription>
-                  Tariffe vantaggiose per ordini all'ingrosso
+                  {content.b2b_benefit_3_description || "Tariffe vantaggiose per ordini all'ingrosso"}
                 </CardDescription>
               </CardHeader>
             </Card>

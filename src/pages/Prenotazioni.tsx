@@ -13,6 +13,7 @@ import { useSearchParams } from "react-router-dom";
 
 const Prenotazioni = () => {
   const [searchParams] = useSearchParams();
+  const [content, setContent] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     restaurantName: "",
     contactName: "",
@@ -30,6 +31,21 @@ const Prenotazioni = () => {
     if (productParam) {
       setFormData(prev => ({ ...prev, product: productParam }));
     }
+
+    const fetchContent = async () => {
+      const { data } = await supabase
+        .from('site_content')
+        .select('key, value')
+        .eq('section', 'prenotazioni');
+      
+      if (data) {
+        const contentMap: Record<string, string> = {};
+        data.forEach(item => contentMap[item.key] = item.value);
+        setContent(contentMap);
+      }
+    };
+
+    fetchContent();
   }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,17 +94,17 @@ const Prenotazioni = () => {
       <main className="pt-32 pb-20">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">Prenotazioni B2B</h1>
+            <h1 className="text-5xl md:text-6xl font-bold mb-4">{content.prenotazioni_page_title || 'Prenotazioni B2B'}</h1>
             <p className="text-xl text-muted-foreground">
-              Forniamo carni premium per ristoranti e attività commerciali
+              {content.prenotazioni_page_subtitle || 'Forniamo carni premium per ristoranti e attività commerciali'}
             </p>
           </div>
 
           <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle className="text-2xl">Richiesta di Fornitura</CardTitle>
+              <CardTitle className="text-2xl">{content.prenotazioni_form_title || 'Richiesta di Fornitura'}</CardTitle>
               <CardDescription>
-                Compila il form per richiedere una fornitura di carni per il tuo ristorante
+                {content.prenotazioni_form_description || 'Compila il form per richiedere una fornitura di carni per il tuo ristorante'}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -194,7 +210,7 @@ const Prenotazioni = () => {
                 </div>
 
                 <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-primary to-accent" disabled={loading}>
-                  {loading ? "Invio in corso..." : "Invia Richiesta"}
+                  {loading ? (content.prenotazioni_submit_button_loading || "Invio in corso...") : (content.prenotazioni_submit_button || "Invia Richiesta")}
                 </Button>
               </form>
             </CardContent>
@@ -203,27 +219,27 @@ const Prenotazioni = () => {
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="bg-card border-border text-center">
               <CardHeader>
-                <CardTitle>Qualità Premium</CardTitle>
+                <CardTitle>{content.prenotazioni_benefit_1_title || 'Qualità Premium'}</CardTitle>
                 <CardDescription>
-                  Solo le migliori carni selezionate per il tuo business
+                  {content.prenotazioni_benefit_1_description || 'Solo le migliori carni selezionate per il tuo business'}
                 </CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="bg-card border-border text-center">
               <CardHeader>
-                <CardTitle>Consegna Rapida</CardTitle>
+                <CardTitle>{content.prenotazioni_benefit_2_title || 'Consegna Rapida'}</CardTitle>
                 <CardDescription>
-                  Consegne puntuali e affidabili in tutta la regione
+                  {content.prenotazioni_benefit_2_description || 'Consegne puntuali e affidabili in tutta la regione'}
                 </CardDescription>
               </CardHeader>
             </Card>
 
             <Card className="bg-card border-border text-center">
               <CardHeader>
-                <CardTitle>Prezzi Competitivi</CardTitle>
+                <CardTitle>{content.prenotazioni_benefit_3_title || 'Prezzi Competitivi'}</CardTitle>
                 <CardDescription>
-                  Tariffe vantaggiose per ordini all'ingrosso
+                  {content.prenotazioni_benefit_3_description || "Tariffe vantaggiose per ordini all'ingrosso"}
                 </CardDescription>
               </CardHeader>
             </Card>
